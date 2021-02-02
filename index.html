@@ -34,7 +34,7 @@
         <script src="data/Tampa_2.js"></script>
         <script>
         var map = L.map('map', {
-            zoomControl:true, maxZoom:28, minZoom:1
+            zoomControl:true, maxZoom:20, minZoom:7
         }).fitBounds([[27.943928534382056,-82.51105565282049],[28.063543016265406,-82.28612021695903]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
@@ -44,10 +44,10 @@
         }
         map.createPane('pane_OpenStreetMap_0');
         map.getPane('pane_OpenStreetMap_0').style.zIndex = 400;
-        var layer_OpenStreetMap_0 = L.tileLayer('https://stamen-tiles.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
+        var layer_OpenStreetMap_0 = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner-lite/{z}/{x}/{y}{r}.png', {
             pane: 'pane_OpenStreetMap_0',
             opacity: 1.0,
-            attribution: 'Map tiles by Stamen Design, under CC BY 3.0. Data by OpenStreetMap, under ODbL.',
+            attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             minZoom: 1,
             maxZoom: 28,
             minNativeZoom: 0,
@@ -63,15 +63,15 @@
         function style_hermes_subdivs_1_0() {
             return {
                 pane: 'pane_hermes_subdivs_1',
-                opacity: 1,
-                color: 'rgba(1,1,1,1.0)',
+                opacity: 0.4,
+                color: 'rgba(76, 127, 51,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
                 weight: 1.0, 
                 fill: true,
-                fillOpacity: 0.6,
-                fillColor: 'rgba(68,108,179,1.0)',
+                fillOpacity: 0.4,
+                fillColor: 'rgba(76, 127, 51,1.0)',
                 interactive: true,
             }
         }
@@ -98,7 +98,7 @@
             return {
                 pane: 'pane_Tampa_2',
                 radius: 3.999999999999997,
-                opacity: 0.2,
+                opacity: 0,
                 color: 'rgba(1,1,1,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
@@ -106,7 +106,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(150,40,27,1.0)',
+                fillColor: 'rgba(68,108,179,1.0)',
                 interactive: true,
             }
         }
