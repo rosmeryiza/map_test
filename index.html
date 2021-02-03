@@ -33,6 +33,21 @@
         <script src="data/hermes_subdivs_1.js"></script>
         <script src="data/Tampa_2.js"></script>
         <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
         var map = L.map('map', {
             zoomControl:true, maxZoom:20, minZoom:7
         }).fitBounds([[27.943928534382056,-82.51105565282049],[28.063543016265406,-82.28612021695903]]);
@@ -56,22 +71,37 @@
         layer_OpenStreetMap_0;
         map.addLayer(layer_OpenStreetMap_0);
         function pop_hermes_subdivs_1(feature, layer) {
-            var popupContent = '<p>' + (feature.properties['LEGAL_NAME'] !== null ? autolinker.link(feature.properties['LEGAL_NAME'].toLocaleString()) : '') + '</p>';
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<p><b>' + (feature.properties['LEGAL_NAME'] !== null ? autolinker.link(feature.properties['LEGAL_NAME'].toLocaleString()) : '') + '</b></p>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
         function style_hermes_subdivs_1_0() {
             return {
                 pane: 'pane_hermes_subdivs_1',
-                opacity: 0.4,
-                color: 'rgba(76, 127, 51,1.0)',
+                opacity: 1,
+                color: 'rgba(1,1,1,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
                 weight: 1.0, 
                 fill: true,
-                fillOpacity: 0.4,
-                fillColor: 'rgba(76, 127, 51,1.0)',
+                fillOpacity: 0.6,
+                fillColor: 'rgba(112, 112, 112,1.0)',
                 interactive: true,
             }
         }
@@ -90,6 +120,21 @@
         bounds_group.addLayer(layer_hermes_subdivs_1);
         map.addLayer(layer_hermes_subdivs_1);
         function pop_Tampa_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
             var popupContent = '<p><b>Address:</b> ' + (feature.properties['SiteAddress'] !== null ? autolinker.link(feature.properties['SiteAddress'].toLocaleString()) : '') + '</p><p><b>Value:</b> ' + (feature.properties['JustValue'] !== null ? autolinker.link(feature.properties['JustValue'].toLocaleString()) : '') + '</p></p><p><b>Neighborhood:</b> ' + (feature.properties['Neighborhood'] !== null ? autolinker.link(feature.properties['Neighborhood'].toLocaleString()) : '') + '</p></p></p><p><b>Subdivision:</b> ' + (feature.properties['Subdivision'] !== null ? autolinker.link(feature.properties['Subdivision'].toLocaleString()) : '') + '</p>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
@@ -106,7 +151,7 @@
                 weight: 1.0,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(68,108,179,1.0)',
+                fillColor: 'rgba(49,64,159,1.0)',
                 interactive: true,
             }
         }
