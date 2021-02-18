@@ -103,7 +103,7 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<p><b>Address:</b> ' + (feature.properties['SiteAddress'] !== null ? autolinker.link(feature.properties['SiteAddress'].toLocaleString()) : '') + '</p><p><b>Market Value:</b> ' + (feature.properties['JustValue'] !== null ? autolinker.link(feature.properties['JustValue'].toLocaleString()) : '') + '</p><p><b>Purchase Date:</b> ' + (feature.properties['LastSaleDate'] !== null ? autolinker.link(feature.properties['Neighborhood'].toLocaleString()) : '') + '</p>';
+            var popupContent = '<p><b>Address:</b> ' + (feature.properties['SiteAddress'] !== null ? autolinker.link(feature.properties['SiteAddress'].toLocaleString()) : '') + '</p><p><b>Market Value:</b> ' + (feature.properties['JustValue'] !== null ? autolinker.link(feature.properties['JustValue'].toLocaleString()) : '') + '</p><p><b>Purchase Date:</b> ' + (feature.properties['LastSaleDate'] !== null ? autolinker.link(feature.properties['LastSaleDate'].toLocaleString()) : '') + '</p>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
