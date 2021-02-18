@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -8,6 +8,8 @@
         <meta name="apple-mobile-web-app-capable" content="yes">
         <link rel="stylesheet" href="css/leaflet.css">
         <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@700&display=swap" rel="stylesheet">
         <style>
         html, body, #map {
             width: 100%;
@@ -18,11 +20,16 @@
         </style>
         <title></title>
     </head>
-    <body>
-        <div id="map">
+    <body> 
+        <h1>French fashion heirs help fund Tampa property purchases</h1>
+        <p>These Tampa homes are owned by a real estate fund whose top foreign investors are heirs of the Hermès luxury goods fortune.</p>
+        <div id="map" style="height: 700px; width: 900px;">
         </div>
+        <p><i>Note: Market value refers to just value in Hillsborough County property records.</i></p>
+
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script>
+        <script src="js/leaflet-svg-shape-markers.min.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
         <script src="js/leaflet.pattern.js"></script>
         <script src="js/leaflet-hash.js"></script>
@@ -30,12 +37,13 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="data/hermes_subdivs_1.js"></script>
-        <script src="data/Tampa_2.js"></script>
+        <script src="data/Hermes_homes_1.js"></script>
+        <script src="data/Tampa_landmarks_2.js"></script>
         <script>
         var highlightLayer;
         function highlightFeature(e) {
             highlightLayer = e.target;
+
             if (e.target.feature.geometry.type === 'LineString') {
               highlightLayer.setStyle({
                 color: '#ffff00',
@@ -48,9 +56,18 @@
             }
             highlightLayer.openPopup();
         }
+        var redIcon = new L.Icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+        });
         var map = L.map('map', {
             zoomControl:true, maxZoom:20, minZoom:7
-        }).fitBounds([[27.943928534382056,-82.51105565282049],[28.063543016265406,-82.28612021695903]]);
+        }).fitBounds([[27.893537140216534,-82.5461592161579],[28.099531466822434,-82.32198941695184]]);
+        map.setView([28.0140, -82.4121], 13);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -70,7 +87,7 @@
         });
         layer_OpenStreetMap_0;
         map.addLayer(layer_OpenStreetMap_0);
-        function pop_hermes_subdivs_1(feature, layer) {
+        function pop_Hermes_homes_1(feature, layer) {
             layer.on({
                 mouseout: function(e) {
                     for (i in e.target._eventParents) {
@@ -86,96 +103,107 @@
                 },
                 mouseover: highlightFeature,
             });
-            var popupContent = '<p><b>' + (feature.properties['LEGAL_NAME'] !== null ? autolinker.link(feature.properties['LEGAL_NAME'].toLocaleString()) : '') + '</b></p>';
+            var popupContent = '<p><b>Address:</b> ' + (feature.properties['SiteAddress'] !== null ? autolinker.link(feature.properties['SiteAddress'].toLocaleString()) : '') + '</p><p><b>Market Value:</b> ' + (feature.properties['JustValue'] !== null ? autolinker.link(feature.properties['JustValue'].toLocaleString()) : '') + '</p><p><b>Purchase Date:</b> ' + (feature.properties['LastSaleDate'] !== null ? autolinker.link(feature.properties['Neighborhood'].toLocaleString()) : '') + '</p>';
             layer.bindPopup(popupContent, {maxHeight: 400});
         }
 
-        function style_hermes_subdivs_1_0() {
+        function style_Hermes_homes_1_0() {
             return {
-                pane: 'pane_hermes_subdivs_1',
+                pane: 'pane_Hermes_homes_1',
+                radius: 5.5,
                 opacity: 1,
                 color: 'rgba(1,1,1,1.0)',
                 dashArray: '',
                 lineCap: 'butt',
                 lineJoin: 'miter',
-                weight: 1.0, 
-                fill: true,
-                fillOpacity: 0.6,
-                fillColor: 'rgba(112, 112, 112,1.0)',
-                interactive: true,
-            }
-        }
-        map.createPane('pane_hermes_subdivs_1');
-        map.getPane('pane_hermes_subdivs_1').style.zIndex = 401;
-        map.getPane('pane_hermes_subdivs_1').style['mix-blend-mode'] = 'normal';
-        var layer_hermes_subdivs_1 = new L.geoJson(json_hermes_subdivs_1, {
-            attribution: '',
-            interactive: true,
-            dataVar: 'json_hermes_subdivs_1',
-            layerName: 'layer_hermes_subdivs_1',
-            pane: 'pane_hermes_subdivs_1',
-            onEachFeature: pop_hermes_subdivs_1,
-            style: style_hermes_subdivs_1_0,
-        });
-        bounds_group.addLayer(layer_hermes_subdivs_1);
-        map.addLayer(layer_hermes_subdivs_1);
-        function pop_Tampa_2(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    for (i in e.target._eventParents) {
-                        e.target._eventParents[i].resetStyle(e.target);
-                    }
-                    if (typeof layer.closePopup == 'function') {
-                        layer.closePopup();
-                    } else {
-                        layer.eachLayer(function(feature){
-                            feature.closePopup()
-                        });
-                    }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<p><b>Address:</b> ' + (feature.properties['SiteAddress'] !== null ? autolinker.link(feature.properties['SiteAddress'].toLocaleString()) : '') + '</p><p><b>Value:</b> ' + (feature.properties['JustValue'] !== null ? autolinker.link(feature.properties['JustValue'].toLocaleString()) : '') + '</p></p><p><b>Neighborhood:</b> ' + (feature.properties['Neighborhood'] !== null ? autolinker.link(feature.properties['Neighborhood'].toLocaleString()) : '') + '</p></p></p><p><b>Subdivision:</b> ' + (feature.properties['Subdivision'] !== null ? autolinker.link(feature.properties['Subdivision'].toLocaleString()) : '') + '</p>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
-        }
-
-        function style_Tampa_2_0() {
-            return {
-                pane: 'pane_Tampa_2',
-                radius: 3.999999999999997,
-                opacity: 0,
-                color: 'rgba(1,1,1,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1.0,
+                weight: 0.7,
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(49,64,159,1.0)',
                 interactive: true,
             }
         }
-        map.createPane('pane_Tampa_2');
-        map.getPane('pane_Tampa_2').style.zIndex = 402;
-        map.getPane('pane_Tampa_2').style['mix-blend-mode'] = 'normal';
-        var layer_Tampa_2 = new L.geoJson(json_Tampa_2, {
+        map.createPane('pane_Hermes_homes_1');
+        map.getPane('pane_Hermes_homes_1').style.zIndex = 401;
+        map.getPane('pane_Hermes_homes_1').style['mix-blend-mode'] = 'normal';
+        var layer_Hermes_homes_1 = new L.geoJson(json_Hermes_homes_1, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Tampa_2',
-            layerName: 'layer_Tampa_2',
-            pane: 'pane_Tampa_2',
-            onEachFeature: pop_Tampa_2,
+            dataVar: 'json_Hermes_homes_1',
+            layerName: 'layer_Hermes_homes_1',
+            pane: 'pane_Hermes_homes_1',
+            onEachFeature: pop_Hermes_homes_1,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_Tampa_2_0(feature));
+                return L.circleMarker(latlng, style_Hermes_homes_1_0(feature));
             },
         });
-        bounds_group.addLayer(layer_Tampa_2);
-        map.addLayer(layer_Tampa_2);
+        bounds_group.addLayer(layer_Hermes_homes_1);
+        map.addLayer(layer_Hermes_homes_1);
+
+        function style_Tampa_landmarks_2_0() {
+            return {
+                pane: 'pane_Tampa_landmarks_2',
+                /*shape: 'diamond',
+                radius: 8,
+                opacity: 1,
+                color: 'rgba(255,158,23,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,158,23,1.0)',
+                interactive: true,*/
+            }
+        }
+        map.createPane('pane_Tampa_landmarks_2');
+        map.getPane('pane_Tampa_landmarks_2').style.zIndex = 402;
+        map.getPane('pane_Tampa_landmarks_2').style['mix-blend-mode'] = 'normal';
+        var layer_Tampa_landmarks_2 = new L.geoJson(json_Tampa_landmarks_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Tampa_landmarks_2',
+            layerName: 'layer_Tampa_landmarks_2',
+            pane: 'pane_Tampa_landmarks_2',
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.marker(latlng, {icon: redIcon});
+            },
+        });
+        bounds_group.addLayer(layer_Tampa_landmarks_2);
+        map.addLayer(layer_Tampa_landmarks_2);
         setBounds();
+        var i = 0;
+        layer_Tampa_landmarks_2.eachLayer(function(layer) {
+            var context = {
+                feature: layer.feature,
+                variables: {}
+            };
+            layer.bindTooltip((layer.feature.properties['Name'] !== null?String('<div style="color: #982E40; background-color: #fff; font-size: 10pt; font-family: \'Noto Sans\', sans-serif;">' + layer.feature.properties['Name']) + '</div>':''), {permanent: true, offset: [6, -6], className: 'css_Tampa_landmarks_2'});
+            labels.push(layer);
+            totalMarkers += 1;
+              layer.added = true;
+              addLabel(layer, i);
+              i++;
+        });
+        resetLabels([layer_Tampa_landmarks_2]);
+        map.on("zoomend", function(){
+            resetLabels([layer_Tampa_landmarks_2]);
+        });
+        map.on("layeradd", function(){
+            resetLabels([layer_Tampa_landmarks_2]);
+        });
+        map.on("layerremove", function(){
+            resetLabels([layer_Tampa_landmarks_2]);
+        });
         </script>
     </body>
 </html>
